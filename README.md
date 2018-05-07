@@ -4,4 +4,4 @@ Atom's syntax highlighting for GRAQL
 Work in process
 
 ## Screenshots
-![Screenshot](screenshots/Screenshot_1.jpg?raw=true "Screenshot")
+![Screenshot](screenshots/Screenshot_1.png?raw=true "Screenshot")
