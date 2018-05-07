@@ -1,0 +1,224 @@
+# TextMate tutorial: http://manual.macromates.com/en/language_grammars
+
+# Regex to convert keys to unquoted: '(include|match|captures|begin|end|beginCaptures|endCaptures|name|patterns|0|1|2|3|4|5|6|7|8|9|comment|fileTypes|scopeName|repository|contentName|firstLineMatch|foldingStartMarker|foldingStopMarker)':
+
+scopeName: 'source.gql' # <scope> should be a short, unique indicator for the language ("js", "php", "c", etc.)
+name: 'Graql' # The title that will show up in grammar selection and on your status bar.
+fileTypes: [ # An array of file extensions.
+  'gql'
+]
+firstLineMatch: '' # A regular expression that is matched against the first line of the document when Atom is trying to decide if the grammar is appropriate. Useful for shell scripts, mostly.
+foldingStartMarker: '' # A regular expression that checks for the start of a foldable area (such as `{`).
+foldingStopMarker: '' # A regular expression that checks for the end of a foldable area (such as `}`). If both folding markers are matched in the same line, there will be no foldable area.
+patterns: [ # An array of individual pattern declarations.
+  {
+    'include': '#comments'
+  }
+  {
+    'include': '#strings'
+  }
+  {
+    match: '[!<>]?=|<>|<|>'
+    name: 'keyword.operator.comparison.graql'
+  }
+  {
+    match: '-|\\+|/'
+    name: 'keyword.operator.math.graql'
+  }
+  {
+    match: '\\s*([a-zA-Z0-9-_]+)\\s+(sub)\\s+((entity)|(relationship)|(attribute)|(role)|(rule)|([a-zA-Z0-9-_]+))'
+    captures:
+      1:
+        name: 'entity.type.name.graql'
+      2:
+        name: 'keyword.control.sub.graql'
+      4:
+        name: 'support.type.entity.graql'
+      5:
+        name: 'support.type.relationship.graql'
+      6:
+        name: 'support.type.attribute.graql'
+      7:
+        name: 'support.type.role.graql'
+      8:
+        name: 'support.type.rule.graql'
+      9:
+        name: 'entity.type.name.graql'
+  }
+  {
+    match: '\\s*(relates)\\s+([a-zA-Z0-9-_]+)'
+    captures:
+      1:
+        name: 'keyword.control.relates.graql'
+      2:
+        name: 'entity.type.name.graql'
+  }
+  {
+    match: '\\s*(plays)\\s+([a-zA-Z0-9-_]+)'
+    captures:
+      1:
+        name: 'keyword.control.plays.graql'
+      2:
+        name: 'entity.type.name.graql'
+  }
+  {
+    match: '\\s*(has)\\s+([a-zA-Z0-9-_]+)'
+    captures:
+      1:
+        name: 'keyword.control.has.graql'
+      2:
+        name: 'entity.type.name.graql'
+  }
+  {
+    match: '[$]([a-zA-Z]+)\\b' # A regular expression that matches some content. Optional.
+    name: 'variable.parameter.graql' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\binsert\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.insert' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\bdefine\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.define' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\bmatch\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.match' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\bhas\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.has' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\bwhen\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.when' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\bthen\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.then' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\bisa\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.isa' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\bplays\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.plays' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\bdatatype\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.datatype' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+  {
+    match: '\\brelates\\b' # A regular expression that matches some content. Optional.
+    name: 'keyword.control.relates' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+  }
+]
+repository: # An array of rules. If you're going to be referencing one bit of code over and over again, stick it here so that you can edit all in one place.
+  comments: # Can be anything.
+    {
+      name: ''
+      begin: '#'
+      end: '$'
+      endCaptures:
+        0:
+          name: ''
+      name: 'comment.line.double-dash.graql'
+    }
+  'strings':
+    'patterns': [
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.string.begin.graql'
+          '2':
+            'name': 'punctuation.definition.string.end.graql'
+        'comment': 'this is faster than the next begin/end rule since sub-pattern will match till end-of-line and graql files tend to have very long lines.'
+        'match': '(\')[^\'\\\\]*(\')'
+        'name': 'string.quoted.single.graql'
+      }
+      {
+        'begin': '\''
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.graql'
+        'end': '\''
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.graql'
+        'name': 'string.quoted.single.graql'
+        'patterns': [
+          {
+            'include': '#string_escape'
+          }
+        ]
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.string.begin.graql'
+          '2':
+            'name': 'punctuation.definition.string.end.graql'
+        'comment': 'this is faster than the next begin/end rule since sub-pattern will match till end-of-line and graql files tend to have very long lines.'
+        'match': '(`)[^`\\\\]*(`)'
+        'name': 'string.quoted.other.backtick.graql'
+      }
+      {
+        'begin': '`'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.graql'
+        'end': '`'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.graql'
+        'name': 'string.quoted.other.backtick.graql'
+        'patterns': [
+          {
+            'include': '#string_escape'
+          }
+        ]
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.string.begin.graql'
+          '2':
+            'name': 'punctuation.definition.string.end.graql'
+        'comment': 'this is faster than the next begin/end rule since sub-pattern will match till end-of-line and graql files tend to have very long lines.'
+        'match': '(")[^"#]*(")'
+        'name': 'string.quoted.double.graql'
+      }
+      {
+        'begin': '"'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.graql'
+        'end': '"'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.graql'
+        'name': 'string.quoted.double.graql'
+        'patterns': [
+          {
+            'include': '#string_interpolation'
+          }
+        ]
+      }
+      {
+        'begin': '%\\{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.graql'
+        'end': '\\}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.graql'
+        'name': 'string.other.quoted.brackets.graql'
+        'patterns': [
+          {
+            'include': '#string_interpolation'
+          }
+        ]
+      }
+    ]
