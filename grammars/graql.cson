@@ -90,28 +90,42 @@ patterns: [ # An array of individual pattern declarations.
         name: 'storage.type.datatype.graql'
   }
   {
+    match: '\\s*([a-zA-Z0-9\\-_]+s*[\\:])\\s*'
+    captures:
+      1:
+        name: 'support.function.any-method.relationship.graql'
+  }
+  {
     match: '[$]([a-zA-Z0-9\\-_]+)'
     name: 'variable.graql'
   }
   {
-    match: '\\binsert\\b' # A regular expression that matches some content. Optional.
-    name: 'keyword.control.insert' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+    match: '\\binsert\\b'
+    name: 'keyword.control.insert.graql'
   }
   {
-    match: '\\bdefine\\b' # A regular expression that matches some content. Optional.
-    name: 'keyword.control.define' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+    match: '\\bdefine\\b'
+    name: 'keyword.control.define.graql'
   }
   {
-    match: '\\bmatch\\b' # A regular expression that matches some content. Optional.
-    name: 'keyword.control.match' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+    match: '\\bmatch\\b'
+    name: 'keyword.control.match.graql'
   }
   {
-    match: '\\bwhen\\b' # A regular expression that matches some content. Optional.
-    name: 'keyword.control.when' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+    match: '\\bmatch\\b'
+    name: 'keyword.control.match.graql'
   }
   {
-    match: '\\bthen\\b' # A regular expression that matches some content. Optional.
-    name: 'keyword.control.then' # A period-delimited list of classes that will be applied to the content identified by `match`. Optional.
+    match: '\\bwhen\\b'
+    name: 'keyword.control.when.graql'
+  }
+  {
+    match: '\\bthen\\b'
+    name: 'keyword.control.then.graql'
+  }
+  {
+    match: '\\bis-abstract\\b'
+    name: 'keyword.control.abstract.graql'
   }
 ]
 repository: # An array of rules. If you're going to be referencing one bit of code over and over again, stick it here so that you can edit all in one place.
