@@ -2,22 +2,22 @@ define
 
 # Entities
 
-person sub entity
-    plays parent
-    plays child
-    plays spouse1
-    plays spouse2
-    plays sibling
-    plays cousin
+person sub entity,
+    plays parent,
+    plays child,
+    plays spouse1,
+    plays spouse2,
+    plays sibling,
+    plays cousin,
 
-    has identifier
-    has firstname
-    has surname
-    has middlename
-    has picture
-    has age
-    has birth-date
-    has death-date
+    has identifier,
+    has firstname,
+    has surname,
+    has middlename,
+    has picture,
+    has age,
+    has birth-date,
+    has death-date,
     has gender;
 
 # Resources
@@ -85,7 +85,7 @@ parentship sub relationship
     relates daughter;
 
 mother sub parent;
-father sub parent;
+father sub parent, is-abstract;
 son sub child;
 daughter sub child;
 
@@ -134,8 +134,8 @@ insert
 
 # DATA
 
-$57472 isa person has firstname "Mary" has identifier "Mary Guthrie" has surname "Guthrie" has gender "female";
-$86144 has surname "Dudley" isa person has identifier "Susan Josephine Dudley" has gender "female" has firstname "Susan" has middlename "Josephine";
+$57472 isa person has firstname 2018-05-10T09:12:23 has identifier -33.0 has surname "Guthrie" has gender "female";
+$86144 has surname "Dudley" isa person has identifier false has gender true has firstname "Susan" has middlename "Josephine";
 $118912 has age 74 isa person has firstname "Margaret" has surname "Newman" has gender "female" has identifier "Margaret Newman";
 $188544 isa person has firstname "Barbara" has birth-date "1833-04-08" has age 52 has identifier "Barbara Ellen Niesz" has gender "female" has middlename "Ellen" has surname "Niesz";
 $32904 has birth-date "1774-08-02" has identifier "John Newman" isa person has surname "Newman" has death-date "1862-12-26" has firstname "John" has gender "male" has age 88;
@@ -173,14 +173,23 @@ $119000 has death-date "1891-12-08" isa person has gender "female" has surname "
 $143576 isa person has firstname "Mary" has death-date "1946-05-10" has surname "Titus" has age 98 has gender "female" has middlename "Melissa" has identifier "Mary Melissa Titus" has birth-date "1847-08-12";
 $237784 isa person has firstname "Mary" has age 83 has gender "female" has surname "Niesz" has birth-date "1824-05-29" has identifier "Mary Niesz";
 $307416 has identifier "George Niesz" isa person has gender "male" has firstname "George" has surname "Niesz";
-$8288 has identifier "Hermione Newman" isa person has firstname "Hermione" has surname "Newman" has gender "female";
+$8288
+  has identifier "Hermione Newman"
+  isa person
+  has firstname 'Hermione'
+  has surname "Newman"
+  has gender "female";
 $114784 isa person has firstname "Barbara" has identifier "Barbara Newman" has surname "Newman" has gender "female";
 $233568 has birth-date "1798-04-09" has identifier "Mary Young" isa person has firstname "Mary" has death-date "1868-10-28" has gender "female" has surname "Young" has age 70;
 $250080 isa person has surname "Newman" has identifier "Lawrence Newman" has gender "male" has age 82 has birth-date "1804 circa" has firstname "Lawrence";
-$266336 isa person has identifier "Josephine" has gender "female" has firstname "Josephine";
+$266336 isa person
+  has identifier #Inner comment
+  "Josephine"
+  has gender "female"
+  has firstname "Josephine";
 $282848 isa person has birth-date "1842-11-16" has identifier "Benjamin Franklin Niesz" has gender "male" has firstname "Benjamin" has middlename "Franklin" has surname "Niesz";
 $389216 has birth-date "1822-05-28" has age 91 has identifier "William Niesz" isa person has firstname "William" has gender "male" has death-date "1913" has surname "Niesz";
-$40964120 has firstname "Jacob" isa person has birth-date "1825-11-18" has death-date "1891-08" has gender "male" has age 65 has middlename "J." has identifier "Jacob J. Niesz" has surname "Niesz";
+$40964120 has firstname 'Jacob' isa person has birth-date "1825-11-18" has death-date "1891-08" has gender "male" has age 65 has middlename "J." has identifier "Jacob J. Niesz" has surname "Niesz";
 $41119768 isa person has surname "Newman" has identifier "Harry Newman" has gender "male" has firstname "Harry";
 $41127960 has identifier "Haman Newman" has firstname "Haman" isa person has surname "Newman" has gender "male";
 $41316376 has age 76 has birth-date "1824-10-20" has firstname "Catherine" isa person has identifier "Catherine Niesz" has death-date "1900" has gender "female" has surname "Niesz" has picture "http:\/\/www.christliebfamilyassociation.com\/images\/CatherineNieszChristlieb.jpg";
@@ -274,7 +283,7 @@ $94448 (parent: $41025568, child: $40968224) isa parentship;
 $24824 (parent: $307416, child: $41361488) isa parentship;
 $4096 (spouse2: $295032, spouse1: $250080) isa marriage;
 $12288 (spouse2: $266336, spouse1: $319680) isa marriage;
-$20480 has picture "http:\/\/2.bp.blogspot.com\/-AT7bLradHgU\/TsfF8VuBpaI\/AAAAAAAAADA\/uodQOYjQikE\/s1600\/willsusieanothercouplesm.jpg" (spouse2: $118840, spouse1: $32904) isa marriage;
+$20480 has picture "http:\/\/2.bp.blogspot.com\/-AT7bLradHgU\/TsfF8VuB\"paI\/A\"AAAAAAAADA\/uodQOYjQikE\/s1600\/willsusieanothercouplesm.jpg" (spouse2: $118840, spouse1: $32904) isa marriage;
 $32768 (spouse2: $86144, spouse1: $299128) isa marriage;
 $204816464 (spouse2: $356544, spouse1: $41316376) isa marriage;
 $204824656 (spouse2: $41095248, spouse1: $237784) isa marriage;
@@ -295,7 +304,7 @@ $40988840 (spouse2: $41349200, spouse1: $249976) isa marriage;
 $81924152 (spouse2: $135288, spouse1: $41340952) isa marriage;
 $81936440 (spouse2: $41209936, spouse1: $282848) isa marriage;
 
-$81940536 (spouse2: $233568, spouse1: $41361488) has picture "http:\/\/1.bp.blogspot.com\/-Ty9Ox8v7LUw\/VKoGzIlsMII\/AAAAAAAAAZw\/UtkUvrujvBQ\/s1600\/johnandmary.jpg" isa marriage;
+$81940536 (spouse2: $233568, spouse1: $41361488) has picture "http://1.bp.blogspot.com/-Ty9Ox8v7LUw\/VKoGzIlsMII\/AAAAAAAAAZw\/UtkUvrujvBQ\/s1600\/johnandmary.jpg" isa marriage;
 
 define
 
