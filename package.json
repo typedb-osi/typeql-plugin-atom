@@ -1,15 +1,13 @@
 {
   "name": "language-graql",
   "main": "./lib/language-graql",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Atom's syntax highlighting for GRAQL",
-  "keywords": [
-  ],
+  "keywords": [],
   "repository": "https://github.com/ShishkinDmitriy/language-graql",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
