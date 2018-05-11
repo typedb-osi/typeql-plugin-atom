@@ -1,0 +1,22 @@
+define
+
+entity1 sub entity;
+entity2 sub entity1;
+entity3 sub entity2;
+
+attr1 sub attribute;
+attr2 sub attr1;
+attr3 sub attr2;
+
+role1 sub role;
+role2 sub role1;
+role3 sub role2;
+
+# Illegal, just for highlighting test
+rule1 sub rule;
+rule2 sub rule1;
+rule3 sub rule2;
+
+relationship1 sub relationship;
+relationship2 sub relationship1;
+relationship3 sub relationship2;

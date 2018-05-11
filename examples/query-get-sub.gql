@@ -1,0 +1,5 @@
+match $x sub thing; get; # List all types
+match $x sub attribute; get; # List all attribute types
+match $x sub entity; get; # List all entity types
+match $x sub role; get; # List all role types
+match $x sub relationship; get; # List all relationship types

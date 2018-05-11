@@ -1,0 +1,5 @@
+define entity1 sub entity has attr1;
+define attr1 sub attribute datatype string;
+
+define entity2 sub entity has attr2;
+define attr2 sub attribute datatype string;

@@ -342,13 +342,14 @@ then
 {(father: $p, son: $c) isa parentship;};
 
 genderizeParentships2 sub rule
-when
-{(parent: $p, child: $c) isa parentship;
-$p has gender "male";
-$c has gender "female";
+when {
+  (parent: $p, child: $c) isa parentship;
+  $p has gender "male";
+  $c has gender "female";
 }
-then
-{(father: $p, daughter: $c) isa parentship;};
+then {
+  (father: $p, daughter: $c) isa parentship;
+};
 
 genderizeParentships3 sub rule
 when

@@ -1,0 +1,4 @@
+insert has attr-long 2018;
+insert isa entity1;
+insert (role1: $20552, role2: $40980536) isa relationship1;
+insert (role1: $250080, role2: $8288) isa parentship;

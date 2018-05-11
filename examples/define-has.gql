@@ -1,0 +1,17 @@
+define
+
+entity1 sub entity
+  has name;
+
+attr1 sub attribute
+  has name;
+
+role1 sub role
+  has name;
+
+# Illegal, just for highlighting test
+rule1 sub rule
+  has name;
+
+relationship1 sub relationship
+  has name;

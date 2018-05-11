@@ -1,0 +1,19 @@
+# Test Comment
+define # Test Comment
+# Test Comment
+entity1 # Test Comment
+# Test Comment
+sub entity # Test Comment
+# Test Comment
+has attr1
+# Test Comment
+; # Test Comment
+# Test Comment
+attr1 # Test Comment
+# Test Comment
+sub attribute # Test Comment
+# Test Comment
+datatype string # Test Comment
+# Test Comment
+; # Test Comment
+# Test Comment

@@ -1,0 +1,22 @@
+insert
+
+$57472
+  has attr-date 2018-05-10T09:12
+  has attr-date 2018-05-10T09:12:23
+  has attr-date 2018-05-10T09:12:23.086654
+  has attr-double 33.0
+  has attr-double -33.0
+  has attr-double +88.0
+  has attr-long 564325
+  has attr-long -456234
+  has attr-long +23234
+  has attr-integer 56i
+  has attr-integer -456i
+  has attr-integer +23i
+  has attr-string "double-quoted"
+  has attr-string 'single-quoted'
+  has attr-string "double\"-\"quoted"
+  has attr-string "double-quoted\\",
+  has attr-string 'single\'-\'quoted'
+  has attr-boolean true
+  has attr-boolean false;

@@ -1,0 +1,18 @@
+define
+
+entity1 sub entity
+  is-abstract;
+
+attr1 sub attribute
+  is-abstract;
+
+# Illegal, just for highlighting test
+role1 sub role
+  is-abstract;
+
+# Illegal, just for highlighting test
+rule1 sub rule
+  is-abstract;
+
+relationship1 sub relationship
+  is-abstract;
