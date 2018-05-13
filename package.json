@@ -1,7 +1,7 @@
 {
   "name": "language-graql",
   "main": "./lib/language-graql",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Atom's syntax highlighting for GRAQL",
   "keywords": [],
   "repository": "https://github.com/ShishkinDmitriy/language-graql",
