@@ -4,6 +4,7 @@
 #########################################
 
 define
+redefine sub entity;
 defined sub entity;
 inserted sub entity;
 reinsert sub entity;
@@ -13,7 +14,7 @@ getter sub entity;
 reget sub entity;
 
 test
-  sub suded
+  sub subed
   sub resub
   has hased
   has rehas
