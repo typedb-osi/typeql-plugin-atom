@@ -1,0 +1,27 @@
+#########################################
+## Check than keywords matched only if
+## they are whole words.
+#########################################
+
+define
+defined sub entity;
+inserted sub entity;
+reinsert sub entity;
+undefined sub entity;
+reundefine sub entity;
+getter sub entity;
+reget sub entity;
+
+test
+  sub suded
+  sub resub
+  has hased
+  has rehas
+  relates relateses
+  relates rerelates
+  datatype datatypes
+  datatype redatatype
+  plays playses
+  plays replay
+  key keyed
+  key rekey;

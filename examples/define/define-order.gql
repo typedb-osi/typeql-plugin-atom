@@ -1,0 +1,12 @@
+define
+
+person
+  has attr1
+  relates some-role
+  plays role1
+  sub entity;
+
+name
+  datatype string
+  sub attribute
+  datatype string;

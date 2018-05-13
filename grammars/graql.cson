@@ -5,64 +5,174 @@
 scopeName: 'source.gql' # <scope> should be a short, unique indicator for the language ("js", "php", "c", etc.)
 name: 'Graql' # The title that will show up in grammar selection and on your status bar.
 fileTypes: [ # An array of file extensions.
-  'gql'
+  'gql',
+  'graql'
 ]
 firstLineMatch: '' # A regular expression that is matched against the first line of the document when Atom is trying to decide if the grammar is appropriate. Useful for shell scripts, mostly.
 foldingStartMarker: '' # A regular expression that checks for the start of a foldable area (such as `{`).
 foldingStopMarker: '' # A regular expression that checks for the end of a foldable area (such as `}`). If both folding markers are matched in the same line, there will be no foldable area.
 patterns: [
-  { include: '#comments' }
+  { include: '#comment' }
   {
-    # define block
-    begin: '\\bdefine\\b'
+    # define and undefine blocks
+    begin: '\\b(?:(define)|(undefine))\\b'
     beginCaptures:
-      0: name: 'keyword.control.define.graql'
-    end: '(?=insert|define|undefine|match|get)'
+      1: name: 'keyword.control.define.graql'
+      2: name: 'keyword.control.undefine.graql'
+    end: '''(?x)
+        (?=
+          \\binsert\\b |
+          \\bdefine\\b |
+          \\bundefine\\b |
+          \\bmatch\\b |
+          \\bget\\b
+        )
+      '''
     name: 'meta.define.graql'
     patterns: [
-      { include: '#comments' }
+      { include: '#comment' }
       {
         # concept declaration
-        begin: '\\b([a-zA-Z0-9\\-_]+)\\b'
+        begin: '\\b[a-zA-Z0-9\\-_]+\\b'
         beginCaptures:
           0: name: 'entity.type.name.graql'
         end: ';'
         endCaptures:
           0: name: 'punctuation.definition.end.graql'
-        name: 'meta.entity.graql'
+        name: 'meta.concept.graql'
         patterns: [
-          { include: '#comments' }
+          { include: '#comment' }
           {
             # ... sub <concept> [,]? ...
             begin: '\\bsub\\b'
             beginCaptures:
               0: name: 'keyword.control.sub.graql'
-            end: '((?=has|sub|plays|relates|when|then|;)|(,))'
+            end: '''(?x)
+              (?=
+                \\bsub\\b |
+                \\bplays\\b |
+                \\brelates\\b |
+                \\bhas\\b |
+                \\bkey\\b |
+                \\bid\\b |
+                \\bdatatype\\b |
+                \\bregex\\b |
+                \\bis-abstract\\b |
+                \\blabel\\b |
+                \\bwhen\\b |
+                \\bthen\\b |
+                ;
+              ) |
+              (,)
+            '''
             endCaptures:
               0: name: 'punctuation.definition.separator.graql'
-            name: 'meta.attribute.graql'
+            name: 'meta.sub.graql'
             patterns: [
-              { include: '#comments' }
-              { include: '#identifiers_build_in' }
-              { include: '#identifiers' }
+              { include: '#comment' }
+              { include: '#identifier_build_in' }
+              { include: '#identifier' }
             ]
           }
           {
             # ... plays <role> [,]? ...
             # ... has <attribute> [,]? ...
             # ... relates <role> [,]? ...
-            begin: '\\b(plays)|(has)|(relates)\\b'
+            # ... key <key> [,]? ...
+            begin: '\\b(?:(plays)|(has)|(relates)|(key))\\b'
             beginCaptures:
               1: name: 'keyword.control.plays.graql'
               2: name: 'keyword.control.has.graql'
               3: name: 'keyword.control.relates.graql'
-            end: '((?=has|sub|plays|relates|when|then|;)|(,))'
+              4: name: 'keyword.control.key.graql'
+            end: '''(?x)
+              (?=
+                \\bsub\\b |
+                \\bplays\\b |
+                \\brelates\\b |
+                \\bhas\\b |
+                \\bkey\\b |
+                \\bid\\b |
+                \\bdatatype\\b |
+                \\bregex\\b |
+                \\bis-abstract\\b |
+                \\blabel\\b |
+                \\bwhen\\b |
+                \\bthen\\b |
+                ;
+              ) |
+              (,)
+            '''
             endCaptures:
               0: name: 'punctuation.definition.separator.graql'
             name: 'meta.attribute.graql'
             patterns: [
-              { include: '#comments' }
-              { include: '#identifiers' }
+              { include: '#comment' }
+              { include: '#identifier' }
+            ]
+          }
+          {
+            # ... id <string> [,]? ...
+            # ... label <string> [,]? ...
+            begin: '\\b(?:(label)|(id))\\b'
+            beginCaptures:
+              1: name: 'keyword.control.label.graql'
+              2: name: 'keyword.control.id.graql'
+            end: '''(?x)
+              (?=
+                \\bsub\\b |
+                \\bplays\\b |
+                \\brelates\\b |
+                \\bhas\\b |
+                \\bkey\\b |
+                \\bid\\b |
+                \\bdatatype\\b |
+                \\bregex\\b |
+                \\bis-abstract\\b |
+                \\blabel\\b |
+                \\bwhen\\b |
+                \\bthen\\b |
+                ;
+              ) |
+              (,)
+            '''
+            endCaptures:
+              0: name: 'punctuation.definition.separator.graql'
+            name: 'meta.label.graql'
+            patterns: [
+              { include: '#comment' }
+              { include: '#string' }
+            ]
+          }
+          {
+            # ... regex <regex> [,]? ...
+            begin: '\\bregex\\b'
+            beginCaptures:
+              0: name: 'keyword.control.regexp.graql'
+            end: '''(?x)
+              (?=
+                \\bsub\\b |
+                \\bplays\\b |
+                \\brelates\\b |
+                \\bhas\\b |
+                \\bkey\\b |
+                \\bid\\b |
+                \\bdatatype\\b |
+                \\bregex\\b |
+                \\bis-abstract\\b |
+                \\blabel\\b |
+                \\bwhen\\b |
+                \\bthen\\b |
+                ;
+              ) |
+              (,)
+            '''
+            endCaptures:
+              0: name: 'punctuation.definition.separator.graql'
+            name: 'meta.regexp.graql'
+            patterns: [
+              { include: '#comment' }
+              { include: '#regexp' }
             ]
           }
           {
@@ -70,14 +180,31 @@ patterns: [
             begin: '\\bdatatype\\b'
             beginCaptures:
               0: name: 'keyword.control.datatype.graql'
-            end: '((?=has|sub|plays|relates|when|then|;)|(,))'
+            end: '''(?x)
+              (?=
+                \\bsub\\b |
+                \\bplays\\b |
+                \\brelates\\b |
+                \\bhas\\b |
+                \\bkey\\b |
+                \\bid\\b |
+                \\bdatatype\\b |
+                \\bregex\\b |
+                \\bis-abstract\\b |
+                \\blabel\\b |
+                \\bwhen\\b |
+                \\bthen\\b |
+                ;
+              ) |
+              (,)
+            '''
             endCaptures:
               0: name: 'punctuation.definition.separator.graql'
-            name: 'meta.attribute.graql'
+            name: 'meta.datatype.graql'
             patterns: [
-              { include: '#comments' }
+              { include: '#comment' }
               { include: '#datatypes_build_in' }
-              { include: '#identifiers_illegal' }
+              { include: '#identifier_illegal' }
             ]
           }
           {
@@ -105,37 +232,8 @@ patterns: [
                   0: name: 'punctuation.definition.preconditions.end.graql'
                 name: 'meta.rule.preconditions.block.graql'
                 patterns: [
-                  { include: '#comments' }
-                  {
-                    # named insert
-                    begin: '([$][a-zA-Z0-9\\-_]+)\\b'
-                    beginCaptures:
-                      1: name: 'variable.graql'
-                    end: ';'
-                    endCaptures:
-                      0: name: 'punctuation.definition.end.graql'
-                    name: 'meta.entity.graql'
-                    patterns: [
-                      { include: '#comments' }
-                      { include: '#relationship' }
-                      { include: '#classification_insert' }
-                      { include: '#composition_insert' }
-                    ]
-                  }
-                  {
-                    # anonymus insert
-                    begin: '(?=isa|has|[(])'
-                    end: ';'
-                    endCaptures:
-                      0: name: 'punctuation.definition.end.graql'
-                    name: 'meta.entity.graql'
-                    patterns: [
-                      { include: '#comments' }
-                      { include: '#relationship' }
-                      { include: '#classification_insert' }
-                      { include: '#composition_insert' }
-                    ]
-                  }
+                  { include: '#comment' }
+                  { include: '#statement_match' }
                 ]
               }
             ]
@@ -158,37 +256,8 @@ patterns: [
                   0: name: 'punctuation.definition.postconditions.end.graql'
                 name: 'meta.rule.postconditions.block.graql'
                 patterns: [
-                  { include: '#comments' }
-                  {
-                    # named insert
-                    begin: '([$][a-zA-Z0-9\\-_]+)\\b'
-                    beginCaptures:
-                      1: name: 'variable.graql'
-                    end: ';'
-                    endCaptures:
-                      0: name: 'punctuation.definition.end.graql'
-                    name: 'meta.entity.graql'
-                    patterns: [
-                      { include: '#comments' }
-                      { include: '#relationship' }
-                      { include: '#classification_insert' }
-                      { include: '#composition_insert' }
-                    ]
-                  }
-                  {
-                    # anonymus insert
-                    begin: '(?=isa|has|[(])'
-                    end: ';'
-                    endCaptures:
-                      0: name: 'punctuation.definition.end.graql'
-                    name: 'meta.entity.graql'
-                    patterns: [
-                      { include: '#comments' }
-                      { include: '#relationship' }
-                      { include: '#classification_insert' }
-                      { include: '#composition_insert' }
-                    ]
-                  }
+                  { include: '#comment' }
+                  { include: '#statement_insert' }
                 ]
               }
             ]
@@ -205,37 +274,8 @@ patterns: [
     end: '(?=insert|define|undefine|match|get)'
     name: 'meta.insert.graql'
     patterns: [
-      { include: '#comments' }
-      {
-        # named insert
-        begin: '([$][a-zA-Z0-9\\-_]+)\\b'
-        beginCaptures:
-          1: name: 'variable.graql'
-        end: ';'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.entity.graql'
-        patterns: [
-          { include: '#comments' }
-          { include: '#relationship' }
-          { include: '#classification_insert' }
-          { include: '#composition_insert' }
-        ]
-      }
-      {
-        # anonymus insert
-        begin: '(?=isa|has|[(])'
-        end: ';'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.entity.graql'
-        patterns: [
-          { include: '#comments' }
-          { include: '#relationship' }
-          { include: '#classification_insert' }
-          { include: '#composition_insert' }
-        ]
-      }
+      { include: '#comment' }
+      { include: '#statement_insert' }
     ]
   }
   {
@@ -246,45 +286,19 @@ patterns: [
     end: '(?=insert|define|undefine|match|get)'
     name: 'meta.match.graql'
     patterns: [
-      { include: '#comments' }
-      {
-        # named match
-        begin: '([$][a-zA-Z0-9\\-_]+)\\b'
-        beginCaptures:
-          1: name: 'variable.graql'
-        end: ';'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.entity.graql'
-        patterns: [
-          { include: '#comments' }
-          { include: '#relationship' }
-          { include: '#classification_match' }
-          { include: '#composition_insert' }
-          { include: '#specialization_insert' }
-        ]
-      }
-      {
-        # anonymus match
-        begin: '(?=isa|has|[(])'
-        end: ';'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.entity.graql'
-        patterns: [
-          { include: '#comments' }
-          { include: '#relationship' }
-          { include: '#classification_match' }
-          { include: '#composition_insert' }
-          { include: '#specialization_insert' }
-        ]
-      }
+      { include: '#comment' }
+      { include: '#statement_match' }
     ]
   }
   {
-    match: '\\b(get)\\s*;'
-    captures:
-      1: name: 'keyword.control.get.graql'
+    begin: '\\bget\\b'
+    beginCaptures:
+      0: name: 'keyword.control.get.graql'
+    end: ';'
+    name: 'meta.get.graql'
+    patterns: [
+      { include: '#variable' }
+    ]
   }
   {
     match: '[!<>]?=|<>|<|>'
@@ -294,70 +308,196 @@ patterns: [
     match: '-|\\+|/'
     name: 'keyword.operator.math.graql'
   }
-  {
-    match: '\\bmatch\\b'
-    name: 'keyword.control.match.graql'
-  }
 ]
 repository:
-  identifiers_build_in:
+  statement_insert:
     patterns: [
       {
-        match: '\\bentity\\b'
-        name: 'support.type.entity.graql'
-      }
-      {
-        match: '\\brelationship\\b'
-        name: 'support.type.relationship.graql'
-      }
-      {
-        match: '\\brole\\b'
-        name: 'support.type.role.graql'
-      }
-      {
-        match: '\\battribute\\b'
-        name: 'support.type.attribute.graql'
-      }
-      {
-        match: '\\brule\\b'
-        name: 'support.type.rule.graql'
+        # Insert
+        begin: '''(?x)
+            (?:
+              ([$][a-zA-Z0-9\\-_]+)\\b |     # Variable
+              ((?=isa|has|sub|[(]))          # Nothing
+            )
+          '''
+        beginCaptures:
+          1: name: 'variable.graql'
+        end: ';'
+        endCaptures:
+          0: name: 'punctuation.definition.end.graql'
+        name: 'meta.insert.graql'
+        patterns: [
+          { include: '#comment' }
+          { include: '#relationship' }
+          { include: '#isa_insert' }
+          { include: '#has_insert' }
+        ]
       }
     ]
-  identifiers:
+  statement_match:
     patterns: [
       {
-        match: '\\b([a-zA-Z0-9\\-_]+)\\b'
-        name: 'entity.type.name.graql'
+        # Match
+        begin: '''(?x)
+            (?:
+              ([$][a-zA-Z0-9\\-_]+)\\b |     # Variable
+              ([a-zA-Z0-9\\-_]+)\\b |        # Identifier
+              ((?=isa|has|sub|[(]))          # Nothing
+            )
+          '''
+        beginCaptures:
+          1: name: 'variable.graql'
+          2: name: 'entity.type.name.graql'
+        end: ';'
+        endCaptures:
+          0: name: 'punctuation.definition.end.graql'
+        name: 'meta.match.graql'
+        patterns: [
+          { include: '#comment' }
+          { include: '#relationship' }
+          { include: '#isa_match' }
+          { include: '#has_insert' }
+          { include: '#sub_match' }
+          { include: '#plays_match' }
+          { include: '#relates_match' }
+        ]
       }
     ]
-  identifiers_illegal:
+  isa_match:
     patterns: [
       {
-        match: '\\b([a-zA-Z0-9\\-_]+)\\b'
-        name: 'invalid.illegal.identifier.graql'
+        # ... isa <concept> [,]? ...
+        begin: '\\bisa\\b'
+        beginCaptures:
+          0: name: 'keyword.control.isa.graql'
+        end: '(?=has|isa|sub|;|\\()|(,)'
+        endCaptures:
+          0: name: 'punctuation.definition.separator.graql'
+        name: 'meta.isa.graql'
+        patterns: [
+          { include: '#comment' }
+          { include: '#identifier_build_in' }
+          { include: '#identifier' }
+          { include: '#variable' }
+        ]
       }
     ]
-  datatypes_build_in:
+  isa_insert:
     patterns: [
       {
-        match: '\\blong\\b'
-        name: 'storage.type.datatype.long.graql'
+        # ... isa <concept> [,]? ...
+        begin: '\\bisa\\b'
+        beginCaptures:
+          0: name: 'keyword.control.isa.graql'
+        end: '(?=has|isa|;|\\()|(,)'
+        endCaptures:
+          0: name: 'punctuation.definition.separator.graql'
+        name: 'meta.isa.graql'
+        patterns: [
+          { include: '#comment' }
+          { include: '#identifier_build_in' }
+          { include: '#identifier' }
+        ]
       }
+    ]
+  plays_match:
+    patterns: [
       {
-        match: '\\bdouble\\b'
-        name: 'storage.type.datatype.double.graql'
+        # ... plays <concept> [,]? ...
+        begin: '\\bplays\\b'
+        beginCaptures:
+          0: name: 'keyword.control.plays.graql'
+        end: '(?=has|isa|sub|;|\\()|(,)'
+        endCaptures:
+          0: name: 'punctuation.definition.separator.graql'
+        name: 'meta.plays.graql'
+        patterns: [
+          { include: '#comment' }
+          { include: '#identifier' }
+          { include: '#variable_build_in' }
+          { include: '#variable' }
+        ]
       }
+    ]
+  relates_match:
+    patterns: [
       {
-        match: '\\bstring\\b'
-        name: 'storage.type.datatype.string.graql'
+        # ... relates <role> [,]? ...
+        begin: '\\brelates\\b'
+        beginCaptures:
+          0: name: 'keyword.control.relates.graql'
+        end: '(?=has|isa|sub|;|\\()|(,)'
+        endCaptures:
+          0: name: 'punctuation.definition.separator.graql'
+        name: 'meta.plays.graql'
+        patterns: [
+          { include: '#comment' }
+          { include: '#identifier' }
+          { include: '#variable' }
+        ]
       }
+    ]
+  sub_match:
+    patterns: [
       {
-        match: '\\bboolean\\b'
-        name: 'storage.type.datatype.boolean.graql'
+        # ... sub <concept> [,]? ...
+        begin: '\\bsub\\b'
+        beginCaptures:
+          0: name: 'keyword.control.sub.graql'
+        end: '(?=has|isa|sub|;|\\()|(,)'
+        endCaptures:
+          0: name: 'punctuation.definition.separator.graql'
+        name: 'meta.sub.graql'
+        patterns: [
+          { include: '#comment' }
+          { include: '#identifier_build_in' }
+          { include: '#identifier' }
+          { include: '#variable' }
+        ]
       }
+    ]
+  sub_insert:
+    patterns: [
       {
-        match: '\\bdate\\b'
-        name: 'storage.type.datatype.date.graql'
+        # ... sub <concept> [,]? ...
+        begin: '\\bsub\\b'
+        beginCaptures:
+          0: name: 'keyword.control.sub.graql'
+        end: '(?=has|isa|sub|;|\\()|(,)'
+        endCaptures:
+          0: name: 'punctuation.definition.separator.graql'
+        name: 'meta.sub.graql'
+        patterns: [
+          { include: '#comment' }
+          { include: '#identifier_build_in' }
+          { include: '#identifier' }
+        ]
+      }
+    ]
+  has_insert:
+    patterns: [
+      {
+        # ... has <attribute> [==]? (date|long|double|string|boolean) [,]? ...
+        begin: '''(?x)
+          \\b(has)\\b\\s*
+          \\b([a-zA-Z0-9\\-_]+)\\b
+          \\b(==)?\\b
+        '''
+        beginCaptures:
+          1: name: 'keyword.control.has.graql'
+          2: name: 'entity.type.name.graql'
+          3: name: 'punctuation.definition.equals.graql'
+        end: '((?=has|isa|;|[(])|(,))'
+        endCaptures:
+          0: name: 'punctuation.definition.end.graql'
+        name: 'meta.has.graql'
+        patterns: [
+          { include: '#comment' }
+          { include: '#dates' }
+          { include: '#string' }
+          { include: '#boolean' }
+          { include: '#numeric' }
+        ]
       }
     ]
   relationship:
@@ -382,95 +522,7 @@ repository:
         ]
       }
     ]
-  variable:
-    patterns: [
-      {
-        match: '[$][a-zA-Z0-9\\-_]+\\b'
-        name: 'variable.graql'
-      }
-    ]
-  classification_match:
-    patterns: [
-      {
-        # ... isa <concept> [,]? ...
-        begin: '\\b(isa)\\b'
-        beginCaptures:
-          0: name: 'keyword.control.isa.graql'
-        end: '((?=has|isa|;|[(])|(,))'
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.entity.graql'
-        patterns: [
-          { include: '#comments' }
-          { include: '#identifiers' }
-          { include: '#identifiers_build_in' }
-          { include: '#variable' }
-        ]
-      }
-    ]
-  classification_insert:
-    patterns: [
-      {
-        # ... isa <concept> [,]? ...
-        begin: '\\b(isa)\\b'
-        beginCaptures:
-          0: name: 'keyword.control.isa.graql'
-        end: '((?=has|isa|;|[(])|(,))'
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.entity.graql'
-        patterns: [
-          { include: '#comments' }
-          { include: '#identifiers' }
-          { include: '#identifiers_build_in' }
-        ]
-      }
-    ]
-  specialization_insert:
-    patterns: [
-      {
-        # ... sub <concept> [,]? ...
-        begin: '\\b(sub)\\b'
-        beginCaptures:
-          0: name: 'keyword.control.sub.graql'
-        end: '((?=has|isa|sub|;|[(])|(,))'
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.entity.graql'
-        patterns: [
-          { include: '#comments' }
-          { include: '#identifiers' }
-          { include: '#identifiers_build_in' }
-        ]
-      }
-    ]
-  composition_insert:
-    patterns: [
-      {
-        # ... has <attribute> [==]? (date|long|double|string|boolean) [,]? ...
-        begin: '''(?x)
-          \\b(has)\\b\\s*
-          \\b([a-zA-Z0-9\\-_]+)\\b
-          \\b(==)?\\b
-        '''
-        beginCaptures:
-          1: name: 'keyword.control.has.graql'
-          2: name: 'entity.type.name.graql'
-          3: name: 'punctuation.definition.equals.graql'
-        end: '((?=has|isa|;|[(])|(,))'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.attribute.graql'
-        patterns: [
-          { include: '#comments' }
-          { include: '#dates' }
-          { include: '#strings' }
-          { include: '#booleans' }
-          { include: '#numbers' }
-        ]
-      }
-    ]
-  comments:
+  comment:
     patterns: [
       {
         begin: '#'
@@ -478,7 +530,7 @@ repository:
         name: 'comment.line.double-dash.graql'
       }
     ]
-  booleans:
+  boolean:
     patterns: [
       {
         match: '\\b(true|false)\\b'
@@ -492,17 +544,102 @@ repository:
         name: 'constant.date.graql'
       }
     ]
-  numbers:
+  numeric:
     patterns: [
       {
         match: '([\\-\\+]?(?:(?:\\d+\\.\\d+)|(?:\\d+[i]?)))\\b'
         name: 'constant.numeric.graql'
       }
     ]
-  strings:
+  variable:
     patterns: [
       {
-        # Single-quoted strings
+        match: '[$][a-zA-Z0-9\\-_]+\\b'
+        name: 'variable.graql'
+      }
+    ]
+  variable_build_in:
+    patterns: [
+      {
+        match: '@[a-zA-Z0-9\\-_]+\\b'
+        name: 'variable.build-in.graql'
+      }
+    ]
+  identifier_build_in:
+    patterns: [
+      {
+        match: '\\bentity\\b'
+        name: 'support.type.entity.graql'
+      }
+      {
+        match: '\\brelationship\\b'
+        name: 'support.type.relationship.graql'
+      }
+      {
+        match: '\\brole\\b'
+        name: 'support.type.role.graql'
+      }
+      {
+        match: '\\battribute\\b'
+        name: 'support.type.attribute.graql'
+      }
+      {
+        match: '\\brule\\b'
+        name: 'support.type.rule.graql'
+      }
+    ]
+  identifier:
+    patterns: [
+      {
+        match: '\\b[a-zA-Z0-9\\-_]+\\b'
+        name: 'entity.type.name.graql'
+      }
+    ]
+  identifier_illegal:
+    patterns: [
+      {
+        match: '\\b[a-zA-Z0-9\\-_]+\\b'
+        name: 'invalid.illegal.identifier.graql'
+      }
+    ]
+  datatypes_build_in:
+    patterns: [
+      {
+        match: '\\blong\\b'
+        name: 'storage.type.datatype.long.graql'
+      }
+      {
+        match: '\\bdouble\\b'
+        name: 'storage.type.datatype.double.graql'
+      }
+      {
+        match: '\\bstring\\b'
+        name: 'storage.type.datatype.strings.graql'
+      }
+      {
+        match: '\\bboolean\\b'
+        name: 'storage.type.datatype.boolean.graql'
+      }
+      {
+        match: '\\bdate\\b'
+        name: 'storage.type.datatype.date.graql'
+      }
+    ]
+  regexp:
+    patterns: [
+      {
+        # Regexp string
+        match: '(/)[^\\\\]*(/)'
+        name: 'string.regexp.graql'
+        captures:
+          1: name: 'punctuation.definition.regexp.begin.graql'
+          2: name: 'punctuation.definition.regexp.end.graql'
+      }
+    ]
+  string:
+    patterns: [
+      {
+        # Single-quoted string
         match: '(\')[^\'\\\\]*(\')'
         name: 'string.quoted.single.graql'
         captures:
@@ -523,7 +660,7 @@ repository:
         ]
       }
       {
-        # Double-quoted strings
+        # Double-quoted string
         match: '(")[^"\\\\]*(")'
         captures:
           1: name: 'punctuation.definition.string.begin.graql'

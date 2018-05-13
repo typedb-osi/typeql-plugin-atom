@@ -1,0 +1,20 @@
+define
+
+entity1 sub entity
+  key some-role;
+
+# Illegal, just for highlighting test
+attr1 sub attribute
+  key some-role;
+
+# Illegal, just for highlighting test
+role1 sub role
+  key some-role;
+
+# Illegal, just for highlighting test
+rule1 sub rule
+  key some-role;
+
+# Illegal, just for highlighting test
+relationship1 sub relationship
+  key some-role;
