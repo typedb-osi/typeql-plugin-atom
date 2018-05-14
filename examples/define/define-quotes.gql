@@ -1,0 +1,16 @@
+define
+
+"entity1" sub "entity";
+"entity2" sub "entity1";
+
+"attr1" sub "attribute";
+"attr2" sub "attr1";
+
+"role1" sub "role";
+"role2" sub "role1";
+
+"rule1" sub "rule";
+"rule2" sub "rule1";
+
+"relationship1" sub "relationship";
+"relationship2" sub "relationship1";

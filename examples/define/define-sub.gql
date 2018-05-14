@@ -3,6 +3,7 @@ define
 entity1 sub entity;
 entity2 sub entity1;
 entity3 sub entity2;
+entity3 sub <template>;
 
 attr1 sub attribute;
 attr2 sub attr1;

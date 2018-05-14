@@ -28,7 +28,7 @@ patterns: [
           \\bget\\b
         )
       '''
-    name: 'meta.define.graql'
+    name: 'meta.define.block.graql'
     patterns: [
       { include: '#comment' }
       {
@@ -59,10 +59,19 @@ patterns: [
     begin: '\\binsert\\b'
     beginCaptures:
       0: name: 'keyword.control.insert.graql'
-    end: '(?=insert|define|undefine|match|get)'
-    name: 'meta.insert.graql'
+    end: '''(?x)
+        (?=
+          \\binsert\\b |
+          \\bdefine\\b |
+          \\bundefine\\b |
+          \\bmatch\\b |
+          \\bget\\b
+        )
+      '''
+    name: 'meta.insert.block.graql'
     patterns: [
       { include: '#comment' }
+      { include: '#for_statement' }
       { include: '#insert_statement' }
     ]
   }
@@ -71,31 +80,33 @@ patterns: [
     begin: '\\bmatch\\b'
     beginCaptures:
       0: name: 'keyword.control.insert.graql'
-    end: '(?=insert|define|undefine|match|get)'
-    name: 'meta.match.graql'
+    end: '''(?x)
+        (?=
+          \\binsert\\b |
+          \\bdefine\\b |
+          \\bundefine\\b |
+          \\bmatch\\b |
+          \\bget\\b
+        )
+      '''
+    name: 'meta.match.block.graql'
     patterns: [
       { include: '#comment' }
+      { include: '#for_statement' }
       { include: '#match_statement' }
     ]
   }
   {
+    # get block
     begin: '\\bget\\b'
     beginCaptures:
       0: name: 'keyword.control.get.graql'
     end: ';'
-    name: 'meta.get.graql'
+    name: 'meta.get.block.graql'
     patterns: [
       { include: '#comment' }
       { include: '#variable' }
     ]
-  }
-  {
-    match: '[!<>]?=|<>|<|>'
-    name: 'keyword.operator.comparison.graql'
-  }
-  {
-    match: '-|\\+|/'
-    name: 'keyword.operator.math.graql'
   }
 ]
 
@@ -132,6 +143,7 @@ repository:
           { include: '#comment' }
           { include: '#identifier_build_in' }
           { include: '#identifier' }
+          { include: '#template' }
         ]
       }
     ]
@@ -351,7 +363,7 @@ repository:
         begin: '''(?x)
             (?:
               ([$][a-zA-Z0-9\\-_]+)\\b |     # Variable
-              ((?=isa|has|[(]))              # Nothing
+              ((?=isa|has|for|if|[(]))          # Nothing
             )
           '''
         beginCaptures:
@@ -359,9 +371,10 @@ repository:
         end: ';'
         endCaptures:
           0: name: 'punctuation.definition.end.graql'
-        name: 'meta.insert.graql'
+        name: 'meta.insert.statement.graql'
         patterns: [
           { include: '#comment' }
+          { include: '#for_statement' }
           { include: '#relationship' }
           { include: '#insert_isa' }
           { include: '#insert_has' }
@@ -383,6 +396,7 @@ repository:
           { include: '#comment' }
           { include: '#identifier_build_in' }
           { include: '#identifier' }
+          { include: '#template' }
         ]
       }
     ]
@@ -409,6 +423,7 @@ repository:
           { include: '#string' }
           { include: '#boolean' }
           { include: '#numeric' }
+          { include: '#template' }
         ]
       }
     ]
@@ -432,6 +447,7 @@ repository:
         name: 'meta.match.graql'
         patterns: [
           { include: '#comment' }
+          { include: '#for_statement' }
           { include: '#relationship' }
           { include: '#match_sub' }
           { include: '#match_isa' }
@@ -553,7 +569,7 @@ repository:
         end: '[)]'
         endCaptures:
           0: name: 'punctuation.definition.end.graql'
-        name: 'meta.entity.graql'
+        name: 'meta.relationship.graql'
         patterns: [
           {
             match: '([a-zA-Z0-9\\-_]+s*[\\:])\\s*([$][a-zA-Z0-9\\-_]+)'
@@ -561,7 +577,58 @@ repository:
               1: name: 'support.function.any-method.relationship.graql'
               2: name: 'variable.graql'
           }
+          { include: '#variable_template' }
           { include: '#variable' }
+        ]
+      }
+    ]
+  for_statement:
+    patterns: [
+      {
+        begin: '\\bfor\\b'
+        beginCaptures:
+          0: name: 'keyword.control.for.graql'
+        end: '(?<=})'
+        name: 'meta.for.graql'
+        patterns: [
+          { include: '#comment' }
+          {
+            begin: '[(]'
+            beginCaptures:
+              0: name: 'punctuation.definition.start.graql'
+            end: '[)]'
+            endCaptures:
+              0: name: 'punctuation.definition.end.graql'
+            name: 'meta.for.iteration.graql'
+            patterns: [
+              { include: '#comment' }
+              {
+                match: '(\\b[a-zA-Z0-9\\-_]+\\b)\\s*(in)\\s*(<[a-zA-Z0-9\\-_]+>)'
+                name: 'meta.comparison.graql'
+                captures:
+                  0: name: 'variable.graql'
+                  1: name: 'markup.raw.graql'
+                  2: name: 'keyword.control.in.graql'
+                  3: name: 'markup.raw.graql'
+              }
+              { include: '#template' }
+            ]
+          }
+          {
+            begin: '\\b(do)\\b\\s*([{])'
+            beginCaptures:
+              1: name: 'keyword.control.do.graql'
+              2: name: 'punctuation.definition.start.graql'
+            end: '[}]'
+            endCaptures:
+              0: name: 'punctuation.definition.end.graql'
+            name: 'meta.for.statements.graql'
+            patterns: [
+              { include: '#comment' }
+              { include: '@self' }
+              { include: '#insert_statement' }
+            ]
+          }
         ]
       }
     ]
@@ -606,6 +673,20 @@ repository:
       {
         match: '@[a-zA-Z0-9\\-_]+\\b'
         name: 'variable.build-in.graql'
+      }
+    ]
+  variable_template:
+    patterns: [
+      {
+        match: '[$](<[a-zA-Z0-9\\-_]+>)'
+        name: 'markup.raw.graql'
+      }
+    ]
+  template:
+    patterns: [
+      {
+        match: '<[a-zA-Z0-9\\-_]+>'
+        name: 'markup.raw.graql'
       }
     ]
   identifier_build_in:
