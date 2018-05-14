@@ -325,7 +325,6 @@ repository:
         name: 'meta.sub.graql'
         patterns: [
           { include: '#comment' }
-          { include: '#string' }
           { include: '#identifier_build_in' }
           { include: '#identifier' }
         ]
@@ -368,7 +367,6 @@ repository:
         name: 'meta.isa.graql'
         patterns: [
           { include: '#comment' }
-          { include: '#string' }
           { include: '#identifier_build_in' }
           { include: '#identifier' }
         ]
@@ -442,7 +440,6 @@ repository:
         name: 'meta.sub.graql'
         patterns: [
           { include: '#comment' }
-          { include: '#string' }
           { include: '#identifier_build_in' }
           { include: '#identifier' }
           { include: '#variable' }
@@ -462,7 +459,6 @@ repository:
         name: 'meta.isa.graql'
         patterns: [
           { include: '#comment' }
-          { include: '#string' }
           { include: '#identifier_build_in' }
           { include: '#identifier' }
           { include: '#variable' }
@@ -482,7 +478,6 @@ repository:
         name: 'meta.plays.graql'
         patterns: [
           { include: '#comment' }
-          { include: '#string' }
           { include: '#identifier' }
           { include: '#variable_build_in' }
           { include: '#variable' }
@@ -502,7 +497,6 @@ repository:
         name: 'meta.plays.graql'
         patterns: [
           { include: '#comment' }
-          { include: '#string' }
           { include: '#identifier' }
           { include: '#variable' }
         ]
@@ -562,7 +556,7 @@ repository:
       {
         begin: '#'
         end: '$'
-        name: 'comment.line.double-dash.graql'
+        name: 'comment.line.dash.graql'
       }
     ]
   boolean:
@@ -603,30 +597,30 @@ repository:
   identifier_build_in:
     patterns: [
       {
-        match: '\\bentity\\b'
+        match: '(\\"entity\\")|(\\bentity\\b)'
         name: 'support.type.entity.graql'
       }
       {
-        match: '\\brelationship\\b'
+        match: '(\\"relationship\\")|(\\brelationship\\b)'
         name: 'support.type.relationship.graql'
       }
       {
-        match: '\\brole\\b'
+        match: '(\\"role\\")|(\\brole\\b)'
         name: 'support.type.role.graql'
       }
       {
-        match: '\\battribute\\b'
+        match: '(\\"attribute\\")|(\\battribute\\b)'
         name: 'support.type.attribute.graql'
       }
       {
-        match: '\\brule\\b'
+        match: '(\\"rule\\")|(\\brule\\b)'
         name: 'support.type.rule.graql'
       }
     ]
   identifier:
     patterns: [
       {
-        match: '\\b[a-zA-Z0-9\\-_]+\\b'
+        match: '(\\"[a-zA-Z0-9\\-_]+\\")|(\\b[a-zA-Z0-9\\-_]+\\b)'
         name: 'entity.type.name.graql'
       }
     ]
