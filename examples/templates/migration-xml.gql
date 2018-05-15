@@ -1,0 +1,17 @@
+insert $x isa person has name <PERSON[0].textContent>;
+
+for(<PERSON>) do {
+    insert $x isa person has description <textContent>;
+    insert $x isa person has best-friend <"~BESTFRIEND">;
+    insert $x isa person has best-friend <BESTFRIEND[1]."~NAME">;
+}
+
+
+insert
+
+$plant isa plant
+    has common <COMMON[0].textContent>
+    has botanical <BOTANICAL[0].textContent>
+    has zone <ZONE[0].textContent>
+    has light <LIGHT[0].textContent>
+    has availability @long(<AVAILABILITY[0].textContent>);

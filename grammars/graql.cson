@@ -13,556 +13,280 @@ foldingStartMarker: '' # A regular expression that checks for the start of a fol
 foldingStopMarker: '' # A regular expression that checks for the end of a foldable area (such as `}`). If both folding markers are matched in the same line, there will be no foldable area.
 patterns: [
   { include: '#comment' }
-  {
-    # define and undefine blocks
-    begin: '\\b(?:(define)|(undefine))\\b'
-    beginCaptures:
-      1: name: 'keyword.control.define.graql'
-      2: name: 'keyword.control.undefine.graql'
-    end: '''(?x)
-        (?=
-          \\binsert\\b |
-          \\bdefine\\b |
-          \\bundefine\\b |
-          \\bmatch\\b |
-          \\bget\\b
-        )
-      '''
-    name: 'meta.define.block.graql'
-    patterns: [
-      { include: '#comment' }
-      {
-        # concept declaration
-        begin: '\\b[a-zA-Z0-9\\-_]+\\b'
-        beginCaptures:
-          0: name: 'entity.type.name.graql'
-        end: ';'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.concept.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#define_sub' }
-          { include: '#define_attribute' }
-          { include: '#define_label' }
-          { include: '#define_regexp' }
-          { include: '#define_datatype' }
-          { include: '#define_abstract' }
-          { include: '#define_when' }
-          { include: '#define_then' }
-        ]
-      }
-    ]
-  }
-  {
-    # insert block
-    begin: '\\binsert\\b'
-    beginCaptures:
-      0: name: 'keyword.control.insert.graql'
-    end: '''(?x)
-        (?=
-          \\binsert\\b |
-          \\bdefine\\b |
-          \\bundefine\\b |
-          \\bmatch\\b |
-          \\bget\\b
-        )
-      '''
-    name: 'meta.insert.block.graql'
-    patterns: [
-      { include: '#comment' }
-      { include: '#for_statement' }
-      { include: '#insert_statement' }
-    ]
-  }
-  {
-    # match block
-    begin: '\\bmatch\\b'
-    beginCaptures:
-      0: name: 'keyword.control.insert.graql'
-    end: '''(?x)
-        (?=
-          \\binsert\\b |
-          \\bdefine\\b |
-          \\bundefine\\b |
-          \\bmatch\\b |
-          \\bget\\b
-        )
-      '''
-    name: 'meta.match.block.graql'
-    patterns: [
-      { include: '#comment' }
-      { include: '#for_statement' }
-      { include: '#match_statement' }
-    ]
-  }
-  {
-    # get block
-    begin: '\\bget\\b'
-    beginCaptures:
-      0: name: 'keyword.control.get.graql'
-    end: ';'
-    name: 'meta.get.block.graql'
-    patterns: [
-      { include: '#comment' }
-      { include: '#variable' }
-    ]
-  }
+  { include: '#block_define' }
+  { include: '#block_undefine' }
+  { include: '#block_insert' }
+  { include: '#block_match' }
+  { include: '#block_get' }
 ]
 
 repository:
-  define_sub:
+  block_define:
     patterns: [
       {
-        # ... sub <concept> [,]? ...
-        begin: '\\bsub\\b'
+        # define and undefine blocks
+        begin: '\\bdefine\\b'
         beginCaptures:
-          0: name: 'keyword.control.sub.graql'
+          0: name: 'keyword.control.define.graql'
         end: '''(?x)
-          (?=
-            \\bsub\\b |
-            \\bplays\\b |
-            \\brelates\\b |
-            \\bhas\\b |
-            \\bkey\\b |
-            \\bid\\b |
-            \\bdatatype\\b |
-            \\bregex\\b |
-            \\bis-abstract\\b |
-            \\blabel\\b |
-            \\bwhen\\b |
-            \\bthen\\b |
-            ;
-          ) |
-          (,)
-        '''
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.sub.graql'
+            (?=
+              \\binsert\\b |
+              \\bdefine\\b |
+              \\bundefine\\b |
+              \\bmatch\\b |
+              \\bget\\b
+            )
+          '''
+        name: 'meta.define.graql'
+        patterns: [{ include: '#define' }]
+      }
+    ]
+  block_undefine:
+    patterns: [
+      {
+        # undefine block
+        begin: '\\bundefine\\b'
+        beginCaptures:
+          0: name: 'keyword.control.undefine.graql'
+        end: '''(?x)
+            (?=
+              \\binsert\\b |
+              \\bdefine\\b |
+              \\bundefine\\b |
+              \\bmatch\\b |
+              \\bget\\b
+            )
+          '''
+        name: 'meta.define.graql'
+        patterns: [{ include: '#define' }]
+      }
+    ]
+  block_insert:
+    patterns: [
+      {
+        # insert block
+        begin: '\\binsert\\b'
+        beginCaptures:
+          0: name: 'keyword.control.insert.graql'
+        end: '''(?x)
+            (?=
+              \\binsert\\b |
+              \\bdefine\\b |
+              \\bundefine\\b |
+              \\bmatch\\b |
+              \\bget\\b
+            )
+          '''
+        name: 'meta.insert.graql'
+        patterns: [{ include: '#insert' }]
+      }
+    ]
+  block_match:
+    patterns: [
+      {
+        # match block
+        begin: '\\bmatch\\b'
+        beginCaptures:
+          0: name: 'keyword.control.insert.graql'
+        end: '''(?x)
+            (?=
+              \\binsert\\b |
+              \\bdefine\\b |
+              \\bundefine\\b |
+              \\bmatch\\b |
+              \\bget\\b
+            )
+          '''
+        name: 'meta.match.graql'
+        patterns: [{ include: '#match' }]
+      }
+    ]
+  block_get:
+    patterns: [
+      {
+        # get block
+        begin: '\\bget\\b'
+        beginCaptures:
+          0: name: 'keyword.control.get.graql'
+        end: ';'
+        name: 'meta.get.block.graql'
         patterns: [
+          # comments
           { include: '#comment' }
-          { include: '#identifier_build_in' }
-          { include: '#identifier' }
-          { include: '#template' }
+          # variables
+          { include: '#variable' }
         ]
       }
     ]
-  define_attribute:
+  define:
     patterns: [
-      {
-        # ... plays <role> [,]? ...
-        # ... has <attribute> [,]? ...
-        # ... relates <role> [,]? ...
-        # ... key <key> [,]? ...
-        begin: '\\b(?:(plays)|(has)|(relates)|(key))\\b'
-        beginCaptures:
-          1: name: 'keyword.control.plays.graql'
-          2: name: 'keyword.control.has.graql'
-          3: name: 'keyword.control.relates.graql'
-          4: name: 'keyword.control.key.graql'
-        end: '''(?x)
-          (?=
-            \\bsub\\b |
-            \\bplays\\b |
-            \\brelates\\b |
-            \\bhas\\b |
-            \\bkey\\b |
-            \\bid\\b |
-            \\bdatatype\\b |
-            \\bregex\\b |
-            \\bis-abstract\\b |
-            \\blabel\\b |
-            \\bwhen\\b |
-            \\bthen\\b |
-            ;
-          ) |
-          (,)
-        '''
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.attribute.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#identifier' }
-        ]
-      }
+      # comments
+      { include: '#comment' }
+      # keywords
+      { include: '#keyword_sub' }
+      { include: '#keyword_plays' }
+      { include: '#keyword_relates' }
+      { include: '#keyword_as' }
+      { include: '#keyword_has' }
+      { include: '#keyword_key' }
+      { include: '#keyword_id' }
+      { include: '#keyword_datatype' }
+      { include: '#keyword_regex' }
+      { include: '#keyword_is_abstract' }
+      { include: '#keyword_label' }
+      # statements
+      { include: '#statement_when' }
+      { include: '#statement_then' }
+      { include: '#statement_for' }
+      { include: '#statement_if' }
+      { include: '#statement_do' }
+      # constants
+      { include: '#constant_regex' }
+      # datatypes
+      { include: '#datatypes_build_in' }
+      # variables
+      { include: '#variable_build_in' }
+      { include: '#variable' }
+      # identifiers
+      { include: '#identifier_build_in' }
+      { include: '#identifier' }
+      # templates
+      { include: '#template_variable' }
+      { include: '#template' }
     ]
-  define_label:
+  insert:
     patterns: [
-      {
-        # ... id <string> [,]? ...
-        # ... label <string> [,]? ...
-        begin: '\\b(?:(label)|(id))\\b'
-        beginCaptures:
-          1: name: 'keyword.control.label.graql'
-          2: name: 'keyword.control.id.graql'
-        end: '''(?x)
-          (?=
-            \\bsub\\b |
-            \\bplays\\b |
-            \\brelates\\b |
-            \\bhas\\b |
-            \\bkey\\b |
-            \\bid\\b |
-            \\bdatatype\\b |
-            \\bregex\\b |
-            \\bis-abstract\\b |
-            \\blabel\\b |
-            \\bwhen\\b |
-            \\bthen\\b |
-            ;
-          ) |
-          (,)
-        '''
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.label.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#string' }
-        ]
-      }
+      # comments
+      { include: '#comment' }
+      # keywords
+      { include: '#keyword_sub' }
+      { include: '#keyword_plays' }
+      { include: '#keyword_relates' }
+      { include: '#keyword_as' }
+      { include: '#keyword_has' }
+      { include: '#keyword_key' }
+      { include: '#keyword_id' }
+      { include: '#keyword_datatype' }
+      { include: '#keyword_regex' }
+      { include: '#keyword_is_abstract' }
+      { include: '#keyword_label' }
+      { include: '#keyword_isa' }
+      # constants
+      { include: '#constant_date' }
+      { include: '#constant_string' }
+      { include: '#constant_boolean' }
+      { include: '#constant_numeric' }
+      { include: '#constant_regex' }
+      # statements
+      { include: '#statement_relationship' }
+      { include: '#statement_for' }
+      { include: '#statement_if' }
+      { include: '#statement_do' }
+      # variables
+      { include: '#variable_build_in' }
+      { include: '#variable' }
+      # identifiers
+      { include: '#identifier_build_in' }
+      { include: '#identifier' }
+      # templates
+      { include: '#template_variable' }
+      { include: '#template' }
     ]
-  define_regexp:
+  match:
     patterns: [
-      {
-        # ... regex <regex> [,]? ...
-        begin: '\\bregex\\b'
-        beginCaptures:
-          0: name: 'keyword.control.regexp.graql'
-        end: '''(?x)
-          (?=
-            \\bsub\\b |
-            \\bplays\\b |
-            \\brelates\\b |
-            \\bhas\\b |
-            \\bkey\\b |
-            \\bid\\b |
-            \\bdatatype\\b |
-            \\bregex\\b |
-            \\bis-abstract\\b |
-            \\blabel\\b |
-            \\bwhen\\b |
-            \\bthen\\b |
-            ;
-          ) |
-          (,)
-        '''
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.regexp.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#regexp' }
-        ]
-      }
+      # comments
+      { include: '#comment' }
+      # keywords
+      { include: '#keyword_sub' }
+      { include: '#keyword_plays' }
+      { include: '#keyword_relates' }
+      { include: '#keyword_as' }
+      { include: '#keyword_has' }
+      { include: '#keyword_key' }
+      { include: '#keyword_id' }
+      { include: '#keyword_datatype' }
+      { include: '#keyword_regex' }
+      { include: '#keyword_is_abstract' }
+      { include: '#keyword_label' }
+      { include: '#keyword_isa_exact' }
+      { include: '#keyword_isa' }
+      { include: '#keyword_comparison' }
+      # constants
+      { include: '#constant_date' }
+      { include: '#constant_string' }
+      { include: '#constant_boolean' }
+      { include: '#constant_numeric' }
+      { include: '#constant_regex' }
+      # statements
+      { include: '#statement_relationship' }
+      { include: '#statement_for' }
+      { include: '#statement_if' }
+      { include: '#statement_do' }
+      # variables
+      { include: '#variable_build_in' }
+      { include: '#variable' }
+      # identifiers
+      { include: '#identifier_build_in' }
+      { include: '#identifier' }
+      # templates
+      { include: '#template_variable' }
+      { include: '#template' }
     ]
-  define_datatype:
+
+  statement_when:
     patterns: [
       {
-        # ... datatype (long|double|string|boolean|date) [,]? ...
-        begin: '\\bdatatype\\b'
-        beginCaptures:
-          0: name: 'keyword.control.datatype.graql'
-        end: '''(?x)
-          (?=
-            \\bsub\\b |
-            \\bplays\\b |
-            \\brelates\\b |
-            \\bhas\\b |
-            \\bkey\\b |
-            \\bid\\b |
-            \\bdatatype\\b |
-            \\bregex\\b |
-            \\bis-abstract\\b |
-            \\blabel\\b |
-            \\bwhen\\b |
-            \\bthen\\b |
-            ;
-          ) |
-          (,)
-        '''
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.datatype.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#datatypes_build_in' }
-          { include: '#identifier_illegal' }
-        ]
-      }
-    ]
-  define_abstract:
-    patterns: [
-      {
-        # ... is-abstract [,]? ...
-        match: '\\b(is-abstract)\\b\\s*(\\,)?'
-        captures:
-          1: name: 'keyword.control.abstract.graql'
-          2: name: 'punctuation.definition.separator.graql'
-      }
-    ]
-  define_when:
-    patterns: [
-      {
-        # ... when { ... } ...
+        # when { ... }
         begin: '\\bwhen\\b'
         beginCaptures:
           0: name: 'keyword.control.when.graql'
         end: '(?<=})'
-        name: 'meta.rule.preconditions.graql'
+        name: 'meta.rule.when.graql'
         patterns: [
           {
-            # ... { ... } ...
+            # { ... }
             begin: '{'
             beginCaptures:
-              0: name: 'punctuation.definition.preconditions.start.graql'
+              0: name: 'punctuation.definition.when.start.graql'
             end: '}'
             endCaptures:
-              0: name: 'punctuation.definition.preconditions.end.graql'
-            name: 'meta.rule.preconditions.block.graql'
-            patterns: [
-              { include: '#comment' }
-              { include: '#match_statement' }
-            ]
+              0: name: 'punctuation.definition.when.end.graql'
+            name: 'meta.rule.when.statements.graql'
+            patterns: [{ include: '#match' }]
           }
         ]
       }
     ]
-  define_then:
+
+  statement_then:
     patterns: [
       {
-        # ... then { ... } ...
+        # then { ... }
         begin: '\\bthen\\b'
         beginCaptures:
           0: name: 'keyword.control.then.graql'
         end: '(?<=})'
-        name: 'meta.rule.postconditions.graql'
+        name: 'meta.rule.then.graql'
         patterns: [
           {
-            # ... { ... } ...
+            # { ... }
             begin: '{'
             beginCaptures:
-              0: name: 'punctuation.definition.postconditions.start.graql'
+              0: name: 'punctuation.definition.then.start.graql'
             end: '}'
             endCaptures:
-              0: name: 'punctuation.definition.postconditions.end.graql'
-            name: 'meta.rule.postconditions.block.graql'
-            patterns: [
-              { include: '#comment' }
-              { include: '#insert_statement' }
-            ]
+              0: name: 'punctuation.definition.then.end.graql'
+            name: 'meta.rule.then.statements.graql'
+            patterns: [{ include: '#insert' }]
           }
         ]
       }
     ]
-  insert_statement:
+
+  statement_relationship:
     patterns: [
       {
-        # Insert statement
-        begin: '''(?x)
-            (?:
-              ([$][a-zA-Z0-9\\-_]+)\\b |     # Variable
-              ((?=isa|has|for|if|[(]))          # Nothing
-            )
-          '''
-        beginCaptures:
-          1: name: 'variable.graql'
-        end: ';'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.insert.statement.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#for_statement' }
-          { include: '#relationship' }
-          { include: '#insert_isa' }
-          { include: '#insert_has' }
-        ]
-      }
-    ]
-  insert_isa:
-    patterns: [
-      {
-        # ... isa <concept> [,]? ...
-        begin: '\\bisa\\b'
-        beginCaptures:
-          0: name: 'keyword.control.isa.graql'
-        end: '(?=has|isa|;|\\()|(,)'
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.isa.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#identifier_build_in' }
-          { include: '#identifier' }
-          { include: '#template' }
-        ]
-      }
-    ]
-  insert_has:
-    patterns: [
-      {
-        # ... has <attribute> [==]? (date|long|double|string|boolean) [,]? ...
-        begin: '''(?x)
-          \\b(has)\\b\\s*
-          \\b([a-zA-Z0-9\\-_]+)\\b
-          \\b(==)?\\b
-        '''
-        beginCaptures:
-          1: name: 'keyword.control.has.graql'
-          2: name: 'entity.type.name.graql'
-          3: name: 'punctuation.definition.equals.graql'
-        end: '((?=has|isa|;|[(])|(,))'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.has.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#date' }
-          { include: '#string' }
-          { include: '#boolean' }
-          { include: '#numeric' }
-          { include: '#template' }
-        ]
-      }
-    ]
-  match_statement:
-    patterns: [
-      {
-        # Match statement
-        begin: '''(?x)
-            (?:
-              ([$][a-zA-Z0-9\\-_]+)\\b |           # Variable
-              ([a-zA-Z0-9\\-_]+)\\b |              # Identifier
-              ((?=sub|isa|plays|relates|has|[(]))  # Nothing
-            )
-          '''
-        beginCaptures:
-          1: name: 'variable.graql'
-          2: name: 'entity.type.name.graql'
-        end: ';'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.match.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#for_statement' }
-          { include: '#relationship' }
-          { include: '#match_sub' }
-          { include: '#match_isa' }
-          { include: '#match_plays' }
-          { include: '#match_relates' }
-          { include: '#match_has' }
-        ]
-      }
-    ]
-  match_sub:
-    patterns: [
-      {
-        # ... sub <concept> [,]? ...
-        begin: '\\bsub\\b'
-        beginCaptures:
-          0: name: 'keyword.control.sub.graql'
-        end: '(?=has|isa|sub|;|\\()|(,)'
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.sub.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#identifier_build_in' }
-          { include: '#identifier' }
-          { include: '#variable' }
-        ]
-      }
-    ]
-  match_isa:
-    patterns: [
-      {
-        # ... isa <concept> [,]? ...
-        begin: '\\bisa\\b'
-        beginCaptures:
-          0: name: 'keyword.control.isa.graql'
-        end: '(?=has|isa|sub|;|\\()|(,)'
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.isa.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#identifier_build_in' }
-          { include: '#identifier' }
-          { include: '#variable' }
-        ]
-      }
-    ]
-  match_plays:
-    patterns: [
-      {
-        # ... plays <concept> [,]? ...
-        begin: '\\bplays\\b'
-        beginCaptures:
-          0: name: 'keyword.control.plays.graql'
-        end: '(?=has|isa|sub|;|\\()|(,)'
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.plays.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#identifier' }
-          { include: '#variable_build_in' }
-          { include: '#variable' }
-        ]
-      }
-    ]
-  match_relates:
-    patterns: [
-      {
-        # ... relates <role> [,]? ...
-        begin: '\\brelates\\b'
-        beginCaptures:
-          0: name: 'keyword.control.relates.graql'
-        end: '(?=has|isa|sub|;|\\()|(,)'
-        endCaptures:
-          0: name: 'punctuation.definition.separator.graql'
-        name: 'meta.plays.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#identifier' }
-          { include: '#variable' }
-        ]
-      }
-    ]
-  match_has:
-    patterns: [
-      {
-        # ... has <attribute> [==]? (date|long|double|string|boolean) [,]? ...
-        # TODO: Add comparison keywords
-        begin: '''(?x)
-          \\b(has)\\b\\s*
-          \\b([a-zA-Z0-9\\-_]+)\\b
-          \\b(==)?\\b
-        '''
-        beginCaptures:
-          1: name: 'keyword.control.has.graql'
-          2: name: 'entity.type.name.graql'
-          3: name: 'punctuation.definition.equals.graql'
-        end: '((?=has|isa|;|[(])|(,))'
-        endCaptures:
-          0: name: 'punctuation.definition.end.graql'
-        name: 'meta.has.graql'
-        patterns: [
-          { include: '#comment' }
-          { include: '#date' }
-          { include: '#string' }
-          { include: '#boolean' }
-          { include: '#numeric' }
-        ]
-      }
-    ]
-  relationship:
-    patterns: [
-      {
-        # ... (role1: $id1, role2: $id2) [,]? ...
+        # (role1: $id1, role2: $id2)
         begin: '[(]'
         beginCaptures:
           1: name: 'punctuation.definition.start.graql'
@@ -571,67 +295,202 @@ repository:
           0: name: 'punctuation.definition.end.graql'
         name: 'meta.relationship.graql'
         patterns: [
-          {
-            match: '([a-zA-Z0-9\\-_]+s*[\\:])\\s*([$][a-zA-Z0-9\\-_]+)'
-            captures:
-              1: name: 'support.function.any-method.relationship.graql'
-              2: name: 'variable.graql'
-          }
-          { include: '#variable_template' }
+          { include: '#identifier_role' }
+          { include: '#identifier_build_in' }
+          { include: '#identifier' }
           { include: '#variable' }
+          { include: '#variable_build_in' }
+          { include: '#template_variable' }
+          { include: '#template' }
         ]
       }
     ]
-  for_statement:
+
+  statement_for:
     patterns: [
       {
+        # for ( ... )
         begin: '\\bfor\\b'
         beginCaptures:
           0: name: 'keyword.control.for.graql'
-        end: '(?<=})'
+        end: '(?<=\\))'
+        endCaptures:
+          0: name: 'punctuation.definition.end.graql'
         name: 'meta.for.graql'
         patterns: [
           { include: '#comment' }
           {
+            # ( ... )
             begin: '[(]'
             beginCaptures:
               0: name: 'punctuation.definition.start.graql'
             end: '[)]'
             endCaptures:
               0: name: 'punctuation.definition.end.graql'
-            name: 'meta.for.iteration.graql'
-            patterns: [
-              { include: '#comment' }
-              {
-                match: '(\\b[a-zA-Z0-9\\-_]+\\b)\\s*(in)\\s*(<[a-zA-Z0-9\\-_]+>)'
-                name: 'meta.comparison.graql'
-                captures:
-                  0: name: 'variable.graql'
-                  1: name: 'markup.raw.graql'
-                  2: name: 'keyword.control.in.graql'
-                  3: name: 'markup.raw.graql'
-              }
-              { include: '#template' }
-            ]
-          }
-          {
-            begin: '\\b(do)\\b\\s*([{])'
-            beginCaptures:
-              1: name: 'keyword.control.do.graql'
-              2: name: 'punctuation.definition.start.graql'
-            end: '[}]'
-            endCaptures:
-              0: name: 'punctuation.definition.end.graql'
             name: 'meta.for.statements.graql'
             patterns: [
               { include: '#comment' }
-              { include: '@self' }
-              { include: '#insert_statement' }
+              { include: '#keyword_in' }
+              { include: '#identifier_build_in' }
+              { include: '#identifier' }
+              { include: '#template_variable' }
+              { include: '#template' }
+              { include: '#constant_string' }
             ]
           }
         ]
       }
     ]
+
+  statement_if:
+    patterns: [
+      {
+        # if ( ... )
+        begin: '\\bif\\b'
+        beginCaptures:
+          0: name: 'keyword.control.if.graql'
+        end: '(?<=\\))'
+        endCaptures:
+          0: name: 'punctuation.definition.end.graql'
+        name: 'meta.if.graql'
+        patterns: [
+          { include: '#comment' }
+          {
+            # ( ... )
+            begin: '[(]'
+            beginCaptures:
+              0: name: 'punctuation.definition.start.graql'
+            end: '[)]'
+            endCaptures:
+              0: name: 'punctuation.definition.end.graql'
+            name: 'meta.if.statements.graql'
+            patterns: [
+              { include: '#comment' }
+              { include: '#keyword_comparison' }
+              { include: '#identifier_build_in' }
+              { include: '#identifier' }
+              { include: '#template_variable' }
+              { include: '#template' }
+              { include: '#constant_string' }
+            ]
+          }
+        ]
+      }
+    ]
+
+  # do { ... }
+  statement_do:
+    patterns: [
+      {
+        begin: '\\bdo\\b'
+        beginCaptures:
+          0: name: 'keyword.control.do.graql'
+        end: '(?<=})'
+        endCaptures:
+          0: name: 'punctuation.definition.end.graql'
+        name: 'meta.do.graql'
+        patterns: [
+          { include: '#comment' }
+          {
+            # { ... }
+            begin: '[{]'
+            beginCaptures:
+              0: name: 'punctuation.definition.start.graql'
+            end: '[}]'
+            endCaptures:
+              0: name: 'punctuation.definition.end.graql'
+            name: 'meta.do.statements.graql'
+            patterns: [
+              { include: '#block_define' }
+              { include: '#block_undefine' }
+              { include: '#block_insert' }
+              { include: '#block_match' }
+              { include: '#block_get' }
+              { include: '#insert' }
+              { include: '#match' }
+              { include: '#define' }
+            ]
+          }
+        ]
+      }
+    ]
+
+  keyword_sub:
+    patterns: [{
+        match: '\\bsub\\b'
+        name: 'keyword.control.sub.graql'
+      }]
+  keyword_plays:
+    patterns: [{
+        match: '\\bplays\\b'
+        name: 'keyword.control.plays.graql'
+      }]
+  keyword_relates:
+    patterns: [{
+        match: '\\brelates\\b'
+        name: 'keyword.control.relates.graql'
+      }]
+  keyword_as:
+    patterns: [{
+        match: '\\bas\\b'
+        name: 'keyword.control.as.graql'
+      }]
+  keyword_has:
+    patterns: [{
+        match: '\\bhas\\b(?!-)'
+        name: 'keyword.control.has.graql'
+      }]
+  keyword_key:
+    patterns: [{
+        match: '\\bkey\\b'
+        name: 'keyword.control.key.graql'
+      }]
+  keyword_id:
+    patterns: [{
+        match: '\\bid\\b'
+        name: 'keyword.control.id.graql'
+      }]
+  keyword_datatype:
+    patterns: [{
+        match: '\\bdatatype\\b'
+        name: 'keyword.control.datatype.graql'
+      }]
+  keyword_regex:
+    patterns: [{
+        match: '\\bregex\\b'
+        name: 'keyword.control.regex.graql'
+      }]
+  keyword_is_abstract:
+    patterns: [{
+        match: '\\bis-abstract\\b'
+        name: 'keyword.control.abstract.graql'
+      }]
+  keyword_label:
+    patterns: [{
+        match: '\\blabel\\b'
+        name: 'keyword.control.label.graql'
+      }]
+  keyword_isa:
+    patterns: [{
+      match: '\\bisa\\b'
+      name: 'keyword.control.isa.graql'
+      }]
+  keyword_isa_exact:
+    patterns: [{
+      match: '\\bisa[!]'
+      name: 'keyword.control.isa.exact.graql'
+      }]
+  keyword_in:
+    patterns: [{
+      match: '\\bin\\b'
+      name: 'keyword.control.in.graql'
+      }]
+  keyword_comparison:
+    patterns: [{
+        match: '[!<>]?=|<>|<|>'
+        name: 'keyword.operator.comparison.graql'
+      }]
+
   comment:
     patterns: [
       {
@@ -640,27 +499,28 @@ repository:
         name: 'comment.line.dash.graql'
       }
     ]
-  boolean:
+  constant_boolean:
     patterns: [
       {
         match: '\\b(true|false)\\b'
         name: 'constant.boolean.graql'
       }
     ]
-  date:
+  constant_date:
     patterns: [
       {
         match: '\\b\\d{4,}-\\d{2}-\\d{2}[T ]\\d{2}:\\d{2}(?::(?:\\d{2}(?:\\.\\d+)?))?\\b'
         name: 'constant.date.graql'
       }
     ]
-  numeric:
+  constant_numeric:
     patterns: [
       {
         match: '([\\-\\+]?(?:(?:\\d+\\.\\d+)|(?:\\d+[i]?)))\\b'
         name: 'constant.numeric.graql'
       }
     ]
+
   variable:
     patterns: [
       {
@@ -672,23 +532,28 @@ repository:
     patterns: [
       {
         match: '@[a-zA-Z0-9\\-_]+\\b'
-        name: 'variable.build-in.graql'
+        name: 'support.function.any-method.relationship.graql'
       }
     ]
-  variable_template:
-    patterns: [
-      {
-        match: '[$](<[a-zA-Z0-9\\-_]+>)'
+
+  template_variable:
+    patterns: [{
+        match: '[$]<(.*?)>'
         name: 'markup.raw.graql'
-      }
-    ]
+      }]
   template:
-    patterns: [
-      {
-        match: '<[a-zA-Z0-9\\-_]+>'
+    patterns: [{
+        match: '<.*?>'
         name: 'markup.raw.graql'
-      }
-    ]
+        captures:
+          1:
+            name: 'meta.other.graql'
+            patterns: [{
+                match: '[[]\\d*[]]'
+                name: 'meta.selector.graql'
+              }]
+      }]
+
   identifier_build_in:
     patterns: [
       {
@@ -713,19 +578,16 @@ repository:
       }
     ]
   identifier:
-    patterns: [
-      {
+    patterns: [{
         match: '(\\"[a-zA-Z0-9\\-_]+\\")|(\\b[a-zA-Z0-9\\-_]+\\b)'
         name: 'entity.type.name.graql'
-      }
-    ]
-  identifier_illegal:
-    patterns: [
-      {
-        match: '\\b[a-zA-Z0-9\\-_]+\\b'
-        name: 'invalid.illegal.identifier.graql'
-      }
-    ]
+      }]
+  identifier_role:
+    patterns: [{
+        match: '(\\"[a-zA-Z0-9\\-_]+\\")|(\\b[a-zA-Z0-9\\-_]+\\b)\\s*[:]'
+        name: 'support.function.any-method.relationship.graql'
+      }]
+
   datatypes_build_in:
     patterns: [
       {
@@ -749,18 +611,18 @@ repository:
         name: 'storage.type.datatype.date.graql'
       }
     ]
-  regexp:
+  constant_regex:
     patterns: [
       {
-        # Regexp string
+        # regex string
         match: '(/)[^\\\\]*(/)'
-        name: 'string.regexp.graql'
+        name: 'string.regex.graql'
         captures:
-          1: name: 'punctuation.definition.regexp.begin.graql'
-          2: name: 'punctuation.definition.regexp.end.graql'
+          1: name: 'punctuation.definition.regex.begin.graql'
+          2: name: 'punctuation.definition.regex.end.graql'
       }
     ]
-  string:
+  constant_string:
     patterns: [
       {
         # Single-quoted string

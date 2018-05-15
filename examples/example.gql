@@ -22,7 +22,10 @@ person sub entity,
 
 # Resources
 
-identifier sub attribute datatype string;
+identifier sub attribute
+  has regex /.*[?](?:(?=ffef))sdf/
+  datatype string;
+
 firstname sub attribute datatype string;
 surname sub attribute datatype string;
 middlename sub attribute datatype string;
@@ -405,6 +408,7 @@ grandParents4 sub rule
 when
 {($p, son: $gc) isa parentship;
 (mother: $gp, $p) isa parentship;
+$gc != $p;
 }
 then
 {(grandmother: $gp, grandson: $gc) isa grandparentship;};

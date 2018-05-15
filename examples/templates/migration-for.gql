@@ -8,9 +8,24 @@ for (<types>) do {
 
 match
    for(<pokemon>) do {
+       $p isa pokemon
+           has weight <weight>
+           has height <height>
+           has pokedex-no <id>
+           has description <identifier>;
         for(t in <types>) do {
             $<t> has type-id <t>;
+              $p isa pokemon
+                  has weight <weight>
+                  has height <height>
+                  has pokedex-no <id>
+                  has description <identifier>;
         }
+        $p isa pokemon
+            has weight <weight>
+            has height <height>
+            has pokedex-no <id>
+            has description <identifier>;
    }
 
 insert
@@ -24,4 +39,10 @@ for(<pokemon>) do {
     for(t in <types>) do {
         (pokemon-with-type: $p, type-of-pokemon: $<t>) isa has-type;
     }
+
+    $p isa pokemon
+        has weight <weight>
+        has height <height>
+        has pokedex-no <id>
+        has description <identifier>;
 }

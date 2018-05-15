@@ -1,2 +1,2 @@
 match $x isa $type; $type label 'person'; get;
-match $x isa person; get;
+match $x isa! person; get;
