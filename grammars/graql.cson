@@ -592,23 +592,23 @@ repository:
     patterns: [
       {
         match: '\\blong\\b'
-        name: 'storage.type.datatype.long.graql'
+        name: 'support.type.datatype.long.graql'
       }
       {
         match: '\\bdouble\\b'
-        name: 'storage.type.datatype.double.graql'
+        name: 'support.type.datatype.double.graql'
       }
       {
         match: '\\bstring\\b'
-        name: 'storage.type.datatype.strings.graql'
+        name: 'support.type.datatype.strings.graql'
       }
       {
         match: '\\bboolean\\b'
-        name: 'storage.type.datatype.boolean.graql'
+        name: 'support.type.datatype.boolean.graql'
       }
       {
         match: '\\bdate\\b'
-        name: 'storage.type.datatype.date.graql'
+        name: 'support.type.datatype.date.graql'
       }
     ]
   constant_regex:
