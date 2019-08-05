@@ -561,7 +561,7 @@ repository:
         name: 'support.type.entity.graql'
       }
       {
-        match: '(\\"relationship\\")|(\\brelationship\\b)'
+        match: '(\\"relation\\")|(\\brelation\\b)'
         name: 'support.type.relationship.graql'
       }
       {
